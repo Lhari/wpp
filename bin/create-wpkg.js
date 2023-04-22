@@ -6,15 +6,16 @@ const baseObj = {
     "version": "1.0.0",
     "description": "",
     "author": ""
-  }
+}
+
+
+
 
   module.exports = function generateConfiguration(name) {
 
     // ask a readline question for each entry of the baseObj, if the answer is empty, use the default value
     // if the answer is not empty, use the answer
     // after all questions are answered, write the file to the current directory
-    // console.log(baseObj);
-    // console.log(name);
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
@@ -57,7 +58,7 @@ const baseObj = {
 function writeFile() {
 // write the file
 
-baseObj.packages = {}
+baseObj.dependencies = {}
 
 fs.writeFile('wpkg.json', JSON.stringify(baseObj, null, 2), (err) => {
     if (err) throw err;
