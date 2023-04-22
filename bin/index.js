@@ -35,28 +35,35 @@ switch(args[0]) {
 
     case 'install':
     case 'i':
-        console.log('installing')
+        // If package is given, install the specific package, else loop over all dependencies and install them
         break
 
     case 'remove':
     case 'r':
+
+        // If remove is set, require a package to be given. Delete package from wpkg.json, then remove the package from the WP install
         console.log('remove package')
         break
 
-    case 'update':
+    case 'upgrade':
     case 'u':
+
+        // If no package is given, simply upgrade all packages that aren't up to the version set within wpkg.json
+
+        // if a package is given, extract the package name and version number from the process.argv array, update it within wpkg.json and install it
         console.log('update package, if no package is given, update all packages')
         break
     
     case 'list':
     case 'l':
-        
-        // let dependencies = JSON.parse()
-        
+    
+        // List all dependencies, and their versions    
         let dependencyObj = []
         for(let [key, value] of (Object.entries(wpPackage.dependencies))) {
             dependencyObj.push({name: key, version: value})
         }
+
+        // TODO: Add Chalk to make this look better
         console.log('')
         console.log(`Listing all dependencies (${dependencyObj.length})`)
         console.table(dependencyObj)
@@ -66,11 +73,13 @@ switch(args[0]) {
     case 'h':
     case '-h':
     case '--help':
+
+        // Write out a helpful message, explaining how to utilize the full API
         console.log('help')
         break
 
     default:
-
+        // Simply just warn people that they cannot use the command without some sort of parameter, after the first time.
         console.log('Unknown command, use -h or --help for help')
         
         break;
