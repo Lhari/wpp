@@ -7,12 +7,22 @@ const generateConfiguration = require("./create-wpkg");
 
 // Get current directory
 const currentLocation = process.cwd();
+const folderName = currentLocation.includes('\\') ? currentLocation.split("\\").pop() : currentLocation.split("/").pop();
 
 // get all arguments from argv, then strip the first two off
 const args = process.argv.slice(2);
+let wpPackage
 
-// read the contents of the wpkg.json file based on currentLocation
-const wpPackage = JSON.parse(fs.readFileSync(`${currentLocation}/wpkg.json`));
+
+if(!fs.existsSync(`${currentLocation}/wpkg.json`)) {
+    generateConfiguration(folderName);
+} else {
+    wpPackage = JSON.parse(fs.readFileSync(`${currentLocation}/wpkg.json`));
+}
+
+
+
+// read the contents of the wpkg.json file based on currentLocation, if the file exists
 
 switch(args[0]) {
     case '-v':
@@ -40,7 +50,16 @@ switch(args[0]) {
     
     case 'list':
     case 'l':
-        console.log(wpPackage.dependencies)
+        
+        // let dependencies = JSON.parse()
+        
+        let dependencyObj = []
+        for(let [key, value] of (Object.entries(wpPackage.dependencies))) {
+            dependencyObj.push({name: key, version: value})
+        }
+        console.log('')
+        console.log(`Listing all dependencies (${dependencyObj.length})`)
+        console.table(dependencyObj)
         break
 
     case 'help':
@@ -50,21 +69,10 @@ switch(args[0]) {
         console.log('help')
         break
 
-    case 'init':
-        generateConfiguration(folderName);
-        break
     default:
-        if (!fs.existsSync(`${currentLocation}/wpkg.json`)) {
-            // Get the name of the folder
-            const folderName = currentLocation.split("\\").pop();
-            
-            // Call the generateConfiguration function
-            generateConfiguration(folderName);
-        } else {
-            console.log('Unknown command, use -h or --help for help')
-        }
+
+        console.log('Unknown command, use -h or --help for help')
+        
         break;
 }
 
-
-// // Check if current location contains a wpkg.json file, if not, generate one
