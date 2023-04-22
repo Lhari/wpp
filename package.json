@@ -8,7 +8,10 @@
   },
   "author": "",
   "license": "ISC",
-  "bin": {  
-    "wpp": "./bin/index.js"  
+  "bin": {
+    "wpp": "./bin/index.js"
+  },
+  "dependencies": {
+    "yargs": "^17.7.1"
   }
 }
